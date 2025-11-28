@@ -17,6 +17,8 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [currentProject, setCurrentProject] = useState(null);
   const [terminalMinimized, setTerminalMinimized] = useState(false);
+  const [showTerminal, setShowTerminal] = useState(true);
+  const [viewMode, setViewMode] = useState('full');
   const [code, setCode] = useState(`import torch
 import torch.nn as nn
 
@@ -245,39 +247,158 @@ model = SimpleNet()
         onAiProviderChange={handleAiProviderChange}
         aiApiKey={aiApiKey}
         onAiApiKeyChange={handleAiApiKeyChange}
+        onToggleTerminal={() => setShowTerminal(!showTerminal)}
+        isTerminalVisible={showTerminal}
       />
 
       {/* Main Content Area with Terminal */}
       <div className="flex-1 flex flex-col overflow-hidden">
+        {/* View Mode Switcher */}
+        <div className="bg-black/20 border-b border-white/10 px-4 py-2 flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <motion.button
+              onClick={() => setViewMode('full')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                viewMode === 'full'
+                  ? 'bg-blue-600 text-white'
+                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              Full IDE
+            </motion.button>
+            <motion.button
+              onClick={() => setViewMode('editor-visualizer')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                viewMode === 'editor-visualizer'
+                  ? 'bg-purple-600 text-white'
+                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              Editor + Visualizer
+            </motion.button>
+            <motion.button
+              onClick={() => setViewMode('editor-terminal')}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                viewMode === 'editor-terminal'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-white/5 text-gray-400 hover:bg-white/10 hover:text-white'
+              }`}
+            >
+              Editor + Terminal
+            </motion.button>
+          </div>
+          <div className="text-xs text-gray-500">
+            {viewMode === 'full' && 'Editor + Visualizer + Terminal'}
+            {viewMode === 'editor-visualizer' && 'Code Editor with Model Visualization'}
+            {viewMode === 'editor-terminal' && 'Code Editor with Terminal Output'}
+          </div>
+        </div>
+
         <div className="flex-1 overflow-hidden">
-          <SplitPane
-            left={
-              <CodeEditor 
-                code={code} 
-                onChange={setCode}
-                output={output}
-                aiProvider={aiProvider}
-                aiApiKey={aiApiKey}
+          {viewMode === 'full' && (
+            <SplitPane
+              left={
+                <CodeEditor 
+                  code={code} 
+                  onChange={setCode}
+                  output={output}
+                  aiProvider={aiProvider}
+                  aiApiKey={aiApiKey}
+                />
+              }
+              right={
+                <AdvancedModelVisualization modelGraph={modelGraph} />
+              }
+              defaultSplit={45}
+              minSize={30}
+              maxSize={70}
+            />
+          )}
+          
+          {viewMode === 'editor-visualizer' && (
+            <motion.div 
+              className="h-full"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <SplitPane
+                left={
+                  <CodeEditor 
+                    code={code} 
+                    onChange={setCode}
+                    output={output}
+                    aiProvider={aiProvider}
+                    aiApiKey={aiApiKey}
+                  />
+                }
+                right={
+                  <AdvancedModelVisualization modelGraph={modelGraph} />
+                }
+                defaultSplit={50}
+                minSize={30}
+                maxSize={70}
               />
-            }
-            right={
-              <AdvancedModelVisualization modelGraph={modelGraph} />
-            }
-            defaultSplit={45}
-            minSize={30}
-            maxSize={70}
-          />
+            </motion.div>
+          )}
+          
+          {viewMode === 'editor-terminal' && (
+            <motion.div 
+              className="h-full flex"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <SplitPane
+                left={
+                  <CodeEditor 
+                    code={code} 
+                    onChange={setCode}
+                    output={output}
+                    aiProvider={aiProvider}
+                    aiApiKey={aiApiKey}
+                  />
+                }
+                right={
+                  <div className="h-full">
+                    <Terminal
+                      output={output}
+                      onClear={() => setOutput('')}
+                      isMinimized={false}
+                      onToggleMinimize={() => {}}
+                    />
+                  </div>
+                }
+                defaultSplit={50}
+                minSize={30}
+                maxSize={70}
+              />
+            </motion.div>
+          )}
         </div>
         
         {/* Terminal Window */}
-        <div className={`${terminalMinimized ? 'h-0' : 'h-64'} transition-all duration-300`}>
-          <Terminal
-            output={output}
-            onClear={() => setOutput('')}
-            isMinimized={terminalMinimized}
-            onToggleMinimize={() => setTerminalMinimized(!terminalMinimized)}
-          />
-        </div>
+        {showTerminal && viewMode === 'full' && (
+          <motion.div 
+            className={`${terminalMinimized ? 'h-0' : 'h-80'} transition-all duration-300 border-t border-white/10`}
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: terminalMinimized ? 0 : 320, opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+          >
+            <Terminal
+              output={output}
+              onClear={() => setOutput('')}
+              isMinimized={terminalMinimized}
+              onToggleMinimize={() => setTerminalMinimized(!terminalMinimized)}
+            />
+          </motion.div>
+        )}
       </div>
     </div>
   );

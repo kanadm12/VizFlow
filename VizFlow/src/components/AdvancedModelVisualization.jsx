@@ -497,13 +497,13 @@ const VisualizationCanvas = ({ layoutData, zoom, selectedLayer, onLayerClick }) 
             <motion.path
               d={pathData}
               fill="none"
-              stroke="#60a5fa"
-              strokeWidth="3"
-              strokeOpacity="0.2"
+              stroke="#3b82f6"
+              strokeWidth="6"
+              strokeOpacity="0.3"
               initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 0.2 }}
+              animate={{ pathLength: 1, opacity: 0.3 }}
               transition={{ duration: 1, delay: idx * 0.05 }}
-              style={{ filter: 'drop-shadow(0 0 4px #3b82f6)' }}
+              style={{ filter: 'drop-shadow(0 0 8px #3b82f6)' }}
             />
             
             {/* Main connection line */}
@@ -511,11 +511,11 @@ const VisualizationCanvas = ({ layoutData, zoom, selectedLayer, onLayerClick }) 
               d={pathData}
               fill="none"
               stroke="#60a5fa"
-              strokeWidth="2"
-              strokeOpacity="0.7"
+              strokeWidth="3"
+              strokeOpacity="0.9"
               markerEnd="url(#arrowhead)"
               initial={{ pathLength: 0, opacity: 0 }}
-              animate={{ pathLength: 1, opacity: 0.7 }}
+              animate={{ pathLength: 1, opacity: 0.9 }}
               transition={{ duration: 0.8, delay: idx * 0.05 }}
               className="hover:stroke-cyan-400"
               style={{ transition: 'stroke 200ms' }}
@@ -523,22 +523,26 @@ const VisualizationCanvas = ({ layoutData, zoom, selectedLayer, onLayerClick }) 
             
             {/* Animated flow pulse */}
             <motion.circle
-              r="3"
+              r="4"
               fill="#06b6d4"
-              opacity="0.8"
-              initial={{ offsetDistance: '0%' }}
-              animate={{ offsetDistance: '100%' }}
-              transition={{
-                duration: 2,
-                delay: idx * 0.1,
-                repeat: Infinity,
-                ease: 'linear'
-              }}
+              opacity="0.9"
               style={{
-                offsetPath: `path('${pathData}')`,
-                offsetRotate: '0deg'
+                filter: 'drop-shadow(0 0 6px #06b6d4)'
               }}
-            />
+            >
+              <animate
+                attributeName="cx"
+                values={`${x1};${x2};${x1}`}
+                dur="3s"
+                repeatCount="indefinite"
+              />
+              <animate
+                attributeName="cy"
+                values={`${y1};${y2};${y1}`}
+                dur="3s"
+                repeatCount="indefinite"
+              />
+            </motion.circle>
           </motion.g>
         );
       })}

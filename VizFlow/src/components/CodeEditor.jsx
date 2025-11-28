@@ -123,16 +123,17 @@ const CodeEditor = ({ code, onChange, output, aiProvider, aiApiKey }) => {
 
       {/* Editor */}
       <div className="flex-grow flex relative">
-        <div className="w-10 text-right pr-2 pt-2 text-gray-500 text-sm select-none">
+        <div className="w-10 text-right pr-2 pt-2 text-gray-500 text-sm select-none font-mono">
           {getLineNumbers().map(n => (
-            <div key={n}>{n}</div>
+            <div key={n} className="leading-5">{n}</div>
           ))}
         </div>
         <textarea
           ref={textareaRef}
           value={activeFile.content}
           onChange={handleCodeChange}
-          className="flex-grow bg-transparent text-white p-2 font-mono text-sm focus:outline-none resize-none"
+          className="flex-grow bg-transparent text-gray-100 p-2 font-mono text-sm focus:outline-none resize-none leading-5"
+          style={{ color: '#e5e7eb', caretColor: '#3b82f6' }}
           spellCheck="false"
         />
       </div>

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Download, Settings, Code, Save, Share2, Sparkles, X, Upload, LogOut, User as UserIcon } from 'lucide-react';
+import { Play, Download, Settings, Code, Save, Share2, Sparkles, X, Upload, LogOut, User as UserIcon, Terminal, Plus } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const Toolbar = ({ onRun, isRunning, onSave, onShare, onUpload, onLogout, user, aiProvider, onAiProviderChange, aiApiKey, onAiApiKeyChange }) => {
+const Toolbar = ({ onRun, isRunning, onSave, onShare, onUpload, onLogout, user, aiProvider, onAiProviderChange, aiApiKey, onAiApiKeyChange, onToggleTerminal, isTerminalVisible }) => {
   const [showAiSettings, setShowAiSettings] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState(aiProvider);
   const [apiKey, setApiKey] = useState(aiApiKey);
@@ -108,11 +108,32 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, onUpload, onLogout, user, 
         transition={{ duration: 0.5, delay: 0.1 }}
       >
         <motion.div
-          className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-lg"
-          whileHover={{ rotate: 10, scale: 1.08 }}
+          className="relative w-10 h-10 rounded-lg shadow-2xl"
+          whileHover={{ rotate: [0, -5, 5, 0], scale: 1.1 }}
           whileTap={{ scale: 0.9 }}
+          animate={{ 
+            rotateY: [0, 360],
+            boxShadow: [
+              '0 0 20px rgba(59, 130, 246, 0.5)',
+              '0 0 40px rgba(168, 85, 247, 0.5)',
+              '0 0 20px rgba(59, 130, 246, 0.5)'
+            ]
+          }}
+          transition={{ 
+            rotateY: { duration: 4, repeat: Infinity, ease: 'linear' },
+            boxShadow: { duration: 2, repeat: Infinity, ease: 'easeInOut' }
+          }}
+          style={{ transformStyle: 'preserve-3d' }}
         >
-          <Code className="w-6 h-6 text-white" />
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-purple-500 to-pink-500 rounded-lg opacity-90" />
+          <div className="absolute inset-0 bg-gradient-to-tl from-cyan-400 via-blue-500 to-purple-600 rounded-lg opacity-80 animate-pulse" />
+          <motion.div 
+            className="relative flex items-center justify-center w-full h-full"
+            animate={{ rotateZ: [0, 5, -5, 0] }}
+            transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <Code className="w-6 h-6 text-white drop-shadow-lg" style={{ filter: 'drop-shadow(0 0 8px rgba(255,255,255,0.8))' }} />
+          </motion.div>
         </motion.div>
         <div>
           <div className="flex items-center space-x-3">
@@ -196,6 +217,17 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, onUpload, onLogout, user, 
           title="Download"
         >
           <Download className="w-4 h-4" />
+        </motion.button>
+
+        <motion.button
+          onClick={onToggleTerminal}
+          variants={childVariants}
+          whileHover="hover"
+          whileTap="tap"
+          className={`${isTerminalVisible ? 'bg-green-600/80' : 'bg-white/10'} hover:bg-white/20 text-white p-2.5 rounded-lg transition-colors`}
+          title={isTerminalVisible ? 'Hide Terminal' : 'Show Terminal'}
+        >
+          <Terminal className="w-4 h-4" />
         </motion.button>
 
         <motion.button
