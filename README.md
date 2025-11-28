@@ -363,17 +363,6 @@ GET /api/user/stats
 Authorization: Bearer <JWT_TOKEN>
 ```
 
-## 🎯 Screenshots
-
-### Main IDE Interface
-![VizFlow IDE](https://via.placeholder.com/800x450/0f172a/3b82f6?text=VizFlow+IDE)
-
-### Model Visualization
-![Model Graph](https://via.placeholder.com/800x450/0f172a/06b6d4?text=Neural+Network+Visualization)
-
-### Terminal Output
-![Terminal](https://via.placeholder.com/800x450/0f172a/10b981?text=Interactive+Terminal)
-
 ## 🤝 Contributing
 
 We welcome contributions! Here's how you can help:
