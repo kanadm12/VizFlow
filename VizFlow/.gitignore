@@ -18,6 +18,7 @@ yarn-error.log*
 
 # Database
 /data
+compass-connections.json
 
 # IDEs and editors
 .idea
