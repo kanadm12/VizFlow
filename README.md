@@ -572,7 +572,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 👥 Team
 
-- **Lead Developer:** [Your Name]
+- **Lead Developer:** Kanad Mukherjee
 - **Design:** Professional dark theme with gradient accents
 - **Architecture:** Modular components + custom hooks
 
@@ -582,12 +582,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Tailwind CSS](https://tailwindcss.com)
 - [Vite Documentation](https://vitejs.dev)
 - [Lucide Icons](https://lucide.dev)
-
-## 📞 Support
-
-For support, email support@vizflow.dev or open an issue on GitHub.
-
----
 
 **Last Updated:** November 17, 2025  
 **Current Version:** 0.1.0-beta  
