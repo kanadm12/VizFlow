@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Download, Settings, Code, Save, Share2, Sparkles, X } from 'lucide-react';
+import { Play, Download, Settings, Code, Save, Share2, Sparkles, X, Upload, LogOut, User as UserIcon } from 'lucide-react';
 import toast from 'react-hot-toast';
 
-const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderChange, aiApiKey, onAiApiKeyChange }) => {
+const Toolbar = ({ onRun, isRunning, onSave, onShare, onUpload, onLogout, user, aiProvider, onAiProviderChange, aiApiKey, onAiApiKeyChange }) => {
   const [showAiSettings, setShowAiSettings] = useState(false);
   const [selectedProvider, setSelectedProvider] = useState(aiProvider);
   const [apiKey, setApiKey] = useState(aiApiKey);
@@ -28,13 +28,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
       onAiApiKeyChange(apiKey);
       setTestingApi(false);
       setShowAiSettings(false);
-      toast.success(`✨ ${selectedProvider.toUpperCase()} connected for code completion!`, {
-        style: {
-          background: '#1a1a2e',
-          color: '#fff',
-          border: '1px solid #06b6d4',
-        },
-      });
+      toast.success(`✨ ${selectedProvider.toUpperCase()} connected for code completion!`);
     }, 1500);
   };
   const buttonVariants = {
@@ -82,45 +76,24 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
 
   const handleRunClick = () => {
     onRun();
-    toast.success('🚀 Running model analysis...', {
-      style: {
-        background: '#1a1a2e',
-        color: '#fff',
-        border: '1px solid #3b82f6',
-      },
-    });
+    toast.success('🚀 Running model analysis...');
   };
 
   const handleSaveClick = () => {
     onSave();
-    toast.success('💾 Code saved!', {
-      style: {
-        background: '#1a1a2e',
-        color: '#fff',
-        border: '1px solid #3b82f6',
+    toast.success('💾 Code saved!');
+  };
       },
     });
   };
 
   const handleShareClick = () => {
     onShare();
-    toast.success('🔗 Share link copied!', {
-      style: {
-        background: '#1a1a2e',
-        color: '#fff',
-        border: '1px solid #3b82f6',
-      },
-    });
+    toast.success('🔗 Share link copied!');
   };
 
   const handleDownload = () => {
-    toast.success('📸 Downloading flowchart as PNG...', {
-      style: {
-        background: '#1a1a2e',
-        color: '#fff',
-        border: '1px solid #3b82f6',
-      },
-    });
+    toast.success('📸 Downloading flowchart as PNG...');
   };
 
   return (
@@ -128,7 +101,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
       variants={containerVariants}
       initial="hidden"
       animate="visible"
-      className="toolbar bg-gradient-to-r from-gray-800 to-gray-900 border-b border-gray-700 px-8 py-4 flex items-center justify-between shadow-lg"
+      className="toolbar bg-white/5 backdrop-blur-lg border-b border-white/10 px-8 py-4 flex items-center justify-between shadow-lg"
     >
       {/* Logo and Title */}
       <motion.div
@@ -138,7 +111,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
         transition={{ duration: 0.5, delay: 0.1 }}
       >
         <motion.div
-          className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-400 to-blue-600 rounded-lg shadow-lg"
+          className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg shadow-lg"
           whileHover={{ rotate: 10, scale: 1.08 }}
           whileTap={{ scale: 0.9 }}
         >
@@ -146,9 +119,9 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
         </motion.div>
         <div>
           <div className="flex items-center space-x-3">
-            <span className="text-gradient font-bold text-xl">VizFlow</span>
+            <span className="font-bold text-xl text-white">VizFlow</span>
             <motion.span
-              className="badge badge-gradient"
+              className="bg-white/10 text-blue-300 text-xs font-bold px-2 py-0.5 rounded-full"
               initial={{ scale: 0, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ delay: 0.3, type: 'spring' }}
@@ -173,7 +146,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
           variants={childVariants}
           whileHover="hover"
           whileTap="tap"
-          className="btn-primary flex items-center space-x-2 px-5 py-2.5"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold flex items-center space-x-2 px-5 py-2.5 rounded-lg transition-all"
         >
           <motion.div
             animate={isRunning ? { rotate: 360 } : { rotate: 0 }}
@@ -189,7 +162,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
           variants={childVariants}
           whileHover="hover"
           whileTap="tap"
-          className="btn-icon"
+          className="bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg"
           title="Save (Ctrl+S)"
         >
           <Save className="w-4 h-4" />
@@ -200,10 +173,21 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
           variants={childVariants}
           whileHover="hover"
           whileTap="tap"
-          className="btn-icon"
+          className="bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg"
           title="Share"
         >
           <Share2 className="w-4 h-4" />
+        </motion.button>
+
+        <motion.button
+          onClick={onUpload}
+          variants={childVariants}
+          whileHover="hover"
+          whileTap="tap"
+          className="bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg"
+          title="Upload File"
+        >
+          <Upload className="w-4 h-4" />
         </motion.button>
 
         <motion.button
@@ -211,7 +195,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
           variants={childVariants}
           whileHover="hover"
           whileTap="tap"
-          className="btn-icon"
+          className="bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg"
           title="Download"
         >
           <Download className="w-4 h-4" />
@@ -222,7 +206,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
           variants={childVariants}
           whileHover="hover"
           whileTap="tap"
-          className={`btn-icon ${aiProvider ? 'bg-blue-600 text-white' : ''}`}
+          className={`bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg ${aiProvider ? 'bg-blue-600 text-white' : ''}`}
           title="AI Code Completion"
         >
           <Sparkles className="w-4 h-4" />
@@ -232,25 +216,47 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
           variants={childVariants}
           whileHover="hover"
           whileTap="tap"
-          className="btn-icon"
+          className="bg-white/10 hover:bg-white/20 text-white p-2.5 rounded-lg"
           title="Settings"
         >
           <Settings className="w-4 h-4" />
         </motion.button>
+
+        {/* User Menu */}
+        {user && (
+          <motion.div
+            variants={childVariants}
+            className="flex items-center space-x-2 ml-2 pl-2 border-l border-white/20"
+          >
+            <div className="flex items-center space-x-2 bg-white/10 px-3 py-1.5 rounded-lg">
+              <UserIcon className="w-4 h-4 text-blue-400" />
+              <span className="text-sm font-medium">{user.username}</span>
+            </div>
+            <motion.button
+              onClick={onLogout}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="bg-red-600/80 hover:bg-red-700 text-white p-2.5 rounded-lg"
+              title="Logout"
+            >
+              <LogOut className="w-4 h-4" />
+            </motion.button>
+          </motion.div>
+        )}
       </motion.div>
 
       {/* AI Settings Modal */}
       <AnimatePresence>
         {showAiSettings && (
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+            className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex items-center justify-center z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setShowAiSettings(false)}
           >
             <motion.div
-              className="bg-gray-800 rounded-lg border border-gray-700 p-6 max-w-md w-full mx-4"
+              className="bg-gray-800/80 backdrop-blur-lg rounded-lg border border-white/20 p-6 max-w-md w-full mx-4 shadow-2xl"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
@@ -263,7 +269,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
                 </div>
                 <motion.button
                   onClick={() => setShowAiSettings(false)}
-                  whileHover={{ scale: 1.1 }}
+                  whileHover={{ scale: 1.1, rotate: 90 }}
                   whileTap={{ scale: 0.95 }}
                   className="text-gray-400 hover:text-white"
                 >
@@ -277,7 +283,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
                   <select
                     value={selectedProvider}
                     onChange={(e) => setSelectedProvider(e.target.value)}
-                    className="w-full bg-gray-700 text-white px-3 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full bg-gray-700/50 text-white px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 border border-white/20"
                   >
                     <option value="">Select Provider...</option>
                     {aiProviders.map(p => (
@@ -302,12 +308,12 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
                       value={apiKey}
                       onChange={(e) => setApiKey(e.target.value)}
                       placeholder={aiProviders.find(p => p.id === selectedProvider)?.placeholder}
-                      className="w-full bg-gray-700 text-white px-3 py-2 rounded text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-full bg-gray-700/50 text-white px-3 py-2 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 border border-white/20"
                     />
                   </motion.div>
                 )}
 
-                <div className="bg-gray-900 p-3 rounded text-xs text-gray-400 border border-gray-700">
+                <div className="bg-black/20 p-3 rounded-md text-xs text-gray-400 border border-white/10">
                   <p className="font-semibold text-gray-300 mb-1">How to get your API key:</p>
                   {selectedProvider === 'claude' && (
                     <p>1. Visit <a href="https://console.anthropic.com" target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline">console.anthropic.com</a><br/>
@@ -326,7 +332,7 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, aiProvider, onAiProviderCh
                 <motion.button
                   onClick={handleAiProviderSave}
                   disabled={testingApi || !selectedProvider || !apiKey}
-                  className={`w-full px-4 py-2 rounded font-medium transition-all ${
+                  className={`w-full px-4 py-2 rounded-lg font-medium transition-all ${
                     testingApi || !selectedProvider || !apiKey
                       ? 'bg-gray-600 text-gray-400 cursor-not-allowed'
                       : 'bg-blue-600 hover:bg-blue-700 text-white'

@@ -2,9 +2,9 @@
 
 > **Professional, modular architecture for visualizing neural network architectures in real-time**
 
-[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/vizflow)
-[![Beta Release](https://img.shields.io/badge/version-2.0-blue)](https://github.com/vizflow/releases)
-[![Dynamic UI](https://img.shields.io/badge/UI-Animated-orange)](https://github.com/vizflow)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen)](https://github.com/kanadm12/VizFlow)
+[![Beta Release](https://img.shields.io/badge/version-2.0-blue)](https://github.com/kanadm12/VizFlow/releases)
+[![Dynamic UI](https://img.shields.io/badge/UI-Animated-orange)](https://github.com/kanadm12/VizFlow)
 [![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
 ## 🎯 Overview
@@ -13,15 +13,26 @@ VizFlow is a professional web-based IDE for visualizing and analyzing AI/ML mode
 
 ### ✨ Key Features
 
+#### Frontend Features
 - **💻 Interactive Code Editor** - Python syntax highlighting with error detection
+- **📤 File Upload** - Load local Python files into the editor
 - **📊 Real-time Visualization** - Interactive SVG-based model architecture diagrams
+- **🖥️ Terminal Window** - Built-in terminal for viewing code execution output
 - **🔍 Layer Inspector** - Click any layer to view detailed parameter information
 - **⚙️ Model Statistics** - Automatic parameter counting and layer analysis
 - **📈 Zoom & Pan** - Intuitive controls for large model graphs
 - **🎬 Smooth Animations** - Professional Framer Motion animations throughout
 - **🔔 Smart Notifications** - React Hot Toast feedback on all interactions
 - **♿ Accessibility** - Respects reduced motion preferences
-- **📥 Export Capabilities** - Coming in Sprint 2 (PNG, SVG, JSON)
+
+#### Backend Features
+- **🔐 User Authentication** - Secure login and signup system
+- **💾 Cloud Storage** - Save and manage your projects in the cloud
+- **🤖 AI Provider Tracking** - Track which AI assistant (Claude, Gemini, ChatGPT, Copilot) users prefer
+- **📈 Usage Analytics** - Monitor AI provider usage statistics per user
+- **🗂️ Project Management** - Create, save, and organize multiple projects
+- **📜 Execution History** - Track all code executions with timestamps
+- **🔒 Secure API** - JWT-based authentication for all API endpoints
 
 ## 🚀 Quick Start
 
@@ -31,10 +42,12 @@ VizFlow is a professional web-based IDE for visualizing and analyzing AI/ML mode
 
 ### Installation
 
+#### Frontend Setup
+
 ```bash
 # Clone the repository
-git clone https://github.com/vizflow/vizflow.git
-cd vizflow
+git clone https://github.com/kanadm12/VizFlow.git
+cd VizFlow/VizFlow
 
 # Install dependencies
 npm install
@@ -44,6 +57,44 @@ npm run dev
 ```
 
 The application will be available at `http://localhost:5174`
+
+#### Backend Setup
+
+```bash
+# Navigate to server directory
+cd VizFlow/VizFlow/server
+
+# Install backend dependencies
+npm install
+
+# Create .env file
+cp .env.example .env
+
+# Edit .env file with your MongoDB URI and JWT secret
+# MONGODB_URI=mongodb://localhost:27017/vizflow
+# JWT_SECRET=your_secure_secret_key
+
+# Start MongoDB (if running locally)
+# mongod
+
+# Start backend server
+npm run dev
+```
+
+The API will be available at `http://localhost:5000`
+
+#### Database Setup
+
+1. **Install MongoDB** (if not already installed):
+   - Download from [https://www.mongodb.com/try/download/community](https://www.mongodb.com/try/download/community)
+   - Or use MongoDB Atlas (cloud): [https://www.mongodb.com/cloud/atlas](https://www.mongodb.com/cloud/atlas)
+
+2. **Start MongoDB**:
+   ```bash
+   mongod
+   ```
+
+3. The database will be created automatically when you run the backend server
 
 ## 📁 Project Structure
 
