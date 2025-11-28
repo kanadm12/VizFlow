@@ -83,9 +83,6 @@ const Toolbar = ({ onRun, isRunning, onSave, onShare, onUpload, onLogout, user, 
     onSave();
     toast.success('💾 Code saved!');
   };
-      },
-    });
-  };
 
   const handleShareClick = () => {
     onShare();
